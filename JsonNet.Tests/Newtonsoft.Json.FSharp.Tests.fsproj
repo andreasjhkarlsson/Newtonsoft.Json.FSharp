@@ -1,0 +1,34 @@
+﻿<Project Sdk="FSharp.NET.Sdk;Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyVersionInfo.fs" />
+    <None Include="paket.references" />
+    <Compile Include="TestFac.fs" />
+    <Compile Include="TestFac.Types.fs" />
+    <Compile Include="Properties.fs" />
+    <Compile Include="FSharpRecord.fs" />
+    <Compile Include="TupleArrayConverter.fs" />
+    <Compile Include="MapConverter.fs" />
+    <Compile Include="ListConverter.fs" />
+    <Compile Include="OptionConverter.fs" />
+    <Compile Include="BigIntConverter.fs" />
+    <Compile Include="UnionConverter.fs" />
+    <Compile Include="UriConverter.fs" />
+    <Compile Include="TypeNaming.fs" />
+    <Compile Include="IntegrationTests.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" Version="4.1.*" />
+    <PackageReference Include="FSharp.NET.Sdk" Version="1.0.*" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.TestPlatform.TestHost" Version="15.0.0" />
+    <PackageReference Include="xUnit" Version="2.2.0" />
+    <PackageReference Include="xUnit.Runner.VisualStudio" Version="2.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Funogram/Funogram.fsproj" />
+  </ItemGroup>
+</Project>

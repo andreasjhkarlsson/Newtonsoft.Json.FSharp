@@ -1,0 +1,24 @@
+﻿<Project Sdk="FSharp.NET.Sdk;Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Prelude.fs" />
+    <Compile Include="Logging.fs" />
+    <Compile Include="TypeNaming.fs" />
+    <Compile Include="Converters\BigIntConverter.fs" />
+    <Compile Include="Converters\GuidConverter.fs" />
+    <Compile Include="Converters\ListConverter.fs" />
+    <Compile Include="Converters\OptionConverter.fs" />
+    <Compile Include="Converters\TupleArrayConverter.fs" />
+    <Compile Include="Converters\UnionConverter.fs" />
+    <Compile Include="Converters\MapConverter.fs" />
+    <Compile Include="Converters\UriConverter.fs" />
+    <Compile Include="Converters\CultureInfoConverter.fs" />
+    <Compile Include="Serialisation.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" Version="4.1.*" />
+    <PackageReference Include="FSharp.NET.Sdk" Version="1.0.*" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

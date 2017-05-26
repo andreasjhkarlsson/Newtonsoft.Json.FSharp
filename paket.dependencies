@@ -1,9 +1,0 @@
-source https://www.nuget.org/api/v2
-framework: net45
-
-nuget FSharp.Core ~> 3.1.2
-nuget Fuchu.FsCheck
-nuget Newtonsoft.Json
-nuget NodaTime
-nuget Unquote
-nuget xunit
