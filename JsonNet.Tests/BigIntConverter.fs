@@ -3,8 +3,7 @@
 open System
 open System.Numerics
 
-open Fuchu
-open Swensen.Unquote
+open Expecto
 open Newtonsoft.Json
 open Newtonsoft.Json.FSharp
 

@@ -1,5 +1,5 @@
 ﻿module Newtonsoft.Json.FSharp.Tests.UriConverter
-open Fuchu
+open Expecto
 
 open System
 

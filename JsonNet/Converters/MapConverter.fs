@@ -18,8 +18,8 @@ type MapConverter() =
 
   let flags = BindingFlags.Static ||| BindingFlags.NonPublic
 
-  let key (kvp : obj) = kvp.GetType().GetProperty("Key").GetValue(kvp, null)
-  let value (kvp : obj) = kvp.GetType().GetProperty("Value").GetValue(kvp, null)
+  let key (kvp : obj) = kvp.GetType().GetTypeInfo().GetProperty("Key").GetValue(kvp, null)
+  let value (kvp : obj) = kvp.GetType().GetTypeInfo().GetProperty("Value").GetValue(kvp, null)
 
   let readProps (reader : JsonReader) readFun =
     let read, require = read reader, require reader
@@ -45,11 +45,11 @@ type MapConverter() =
     FSharpValue.MakeTuple([|key; value|], FSharpType.MakeTupleType argTypes)
 
   override x.CanConvert t =
-    t.IsGenericType
+    t.GetTypeInfo().IsGenericType
     && typeof<Map<_,_>>.Equals (t.GetGenericTypeDefinition())
 
   override x.WriteJson(writer : JsonWriter, o : obj, serialiser : JsonSerializer) =
-    if o = null then nullArg "value"
+    if isNull(o) then nullArg "value"
     writeObject writer <| fun () ->
       let kvs = o :?> System.Collections.IEnumerable
       for key, value in kvs |> Seq.cast |> Seq.map (fun kv -> (key kv), (value kv)) do
@@ -58,7 +58,7 @@ type MapConverter() =
 
   override x.ReadJson(reader, objectType, existingValue, serialiser) =
     let read, readProp, req = (read, readProp, require) $ reader
-    let argTypes = objectType.GetGenericArguments()
+    let argTypes = objectType.GetTypeInfo().GetGenericArguments()
 
     let tupleType =
       argTypes
@@ -82,7 +82,8 @@ type MapConverter() =
           "values",     box kvsn ]
         "creating map from keys and values"
 
-    let methodInfo = objectType.GetMethod("Create", flags, null, [|constructedIEnumerableType|], null)
+    let m = objectType.GetTypeInfo()
+    let methodInfo = objectType.GetTypeInfo().GetMethod("Create", [|constructedIEnumerableType|])//, flags, null, [|constructedIEnumerableType|], null)
     methodInfo.Invoke(null, [|kvsn|])
 //    debug <| sprintf "Source array: %s" (kvs.GetType().ToString())
 //    debug <| sprintf "Target array: %s" (kvsn.GetType().ToString())

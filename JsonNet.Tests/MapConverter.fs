@@ -1,7 +1,6 @@
 ﻿module Newtonsoft.Json.FSharp.Tests.MapConverter
 
-open Swensen.Unquote
-open Fuchu
+open Expecto
 open Newtonsoft.Json
 open Newtonsoft.Json.FSharp
 
@@ -33,17 +32,17 @@ let mapTests =
   testList "map tests" [
     testCase "baseline: serialising empty map {} to string (defaults)" <| fun _ ->
       let js = mapSer Map.empty<string, int>
-      js =? "{}"
+      Expect.equal js "{}" "js should equal {}"
 
     testCase "serialising empty map {} to string" <| fun _ ->
-      (mapSer Map.empty<string, int>) =? "{}"
+      Expect.equal (mapSer Map.empty<string, int>) "{}" "should equal {}"
 
     testCase "deserialising {} to Map.empty<string, int>" <| fun _ ->
-      (mapDeser "{}") =? Map.empty<string, int>
+      Expect.equal (mapDeser "{}") Map.empty<string, int> "should equal..."
 
     testCase @"deserialising { ""a"": 3 } to map [ ""a"" => 3 ]" <| fun _ ->
       let res = JsonConvert.DeserializeObject<Map<string, int>>("""{ "a": 3 }""", MapConverter())
-      res =? ([("a", 3)] |> Map.ofList)
+      Expect.equal res ([("a", 3)] |> Map.ofList) "should equal..."
 
     testCase "serialising empty map roundtrip" <| fun _ ->
       test [MapConverter()] Map.empty
@@ -57,22 +56,19 @@ let mapTests =
     testCase "prop with map (explicit)" <| fun () ->
       let res = deserialise<PropWithMap> Serialisation.converters
                                   """{"b":{}}"""
-      Assert.Equal("should be eq to res", { b = Map.empty }, res)
+      Expect.equal { b = Map.empty } res "should be eq to res"
 
     testCase "failing test - array before object" <| fun _ ->
-      let res = deserialise<ThisFails> Serialisation.converters
-                                       """{"a":["xyz","zyx"],"m":{}}"""
-      Assert.Equal("should be eq to res", { a = "xyz", "zyx"; m = Map.empty }, res)
+      let res = deserialise<ThisFails> Serialisation.converters """{"a":["xyz","zyx"],"m":{}}"""
+      Expect.equal { a = "xyz", "zyx"; m = Map.empty } res "should be eq to res"
 
     testCase "passing test - array after object" <| fun _ ->
-      let res = deserialise<ThisWorks> Serialisation.converters
-                                       """{"y":{},"z":["xyz","zyx"]}"""
-      Assert.Equal("should be eq to res", { y = Map.empty; z = "xyz", "zyx" }, res)
+      let res = deserialise<ThisWorks> Serialisation.converters """{"y":{},"z":["xyz","zyx"]}"""
+      Expect.equal { y = Map.empty; z = "xyz", "zyx" } res "should be eq to res"
 
     testCase "string after tuple" <| fun _ ->
-      let res = deserialise<ThirdAttempt> Serialisation.converters
-                                          """{"t":["",""],"s":"xyz"}"""
-      Assert.Equal("should be eq to res", { t = "", ""; s = "xyz" }, res)
+      let res = deserialise<ThirdAttempt> Serialisation.converters """{"t":["",""],"s":"xyz"}"""
+      Expect.equal { t = "", ""; s = "xyz" } res "should be eq to res"
 
 
     //testProp "playing with map alias" <| fun (dto : NestedModule.ADto) ->

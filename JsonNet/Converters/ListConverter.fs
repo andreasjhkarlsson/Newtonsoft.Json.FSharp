@@ -15,7 +15,7 @@ type ListConverter() =
   let logger = Logging.getLoggerByName "Newtonsoft.Json.FSharp.ListConverter"
 
   override x.CanConvert t = 
-    t.IsGenericType
+    t.GetTypeInfo().IsGenericType
     && typeof<list<_>>.Equals (t.GetGenericTypeDefinition())
 
   override x.WriteJson(writer, value, serializer) =
@@ -27,7 +27,7 @@ type ListConverter() =
 
   override x.ReadJson(reader, t, _, serializer) =
     let itemType =
-      t.GetGenericArguments().[0]
+      t.GetTypeInfo().GetGenericArguments().[0]
     let collectionType =
       typeof<IEnumerable<_>>.MakeGenericType itemType
 

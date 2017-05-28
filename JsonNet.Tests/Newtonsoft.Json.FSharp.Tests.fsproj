@@ -4,8 +4,6 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AssemblyVersionInfo.fs" />
-    <None Include="paket.references" />
     <Compile Include="TestFac.fs" />
     <Compile Include="TestFac.Types.fs" />
     <Compile Include="Properties.fs" />
@@ -22,13 +20,15 @@
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="FsCheck" Version="2.9.0" />
     <PackageReference Include="FSharp.Core" Version="4.1.*" />
     <PackageReference Include="FSharp.NET.Sdk" Version="1.0.*" PrivateAssets="All" />
     <PackageReference Include="Microsoft.TestPlatform.TestHost" Version="15.0.0" />
     <PackageReference Include="xUnit" Version="2.2.0" />
     <PackageReference Include="xUnit.Runner.VisualStudio" Version="2.2.0" />
+    <PackageReference Include="Expecto" Version="5.0.0-rc1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../Funogram/Funogram.fsproj" />
+    <ProjectReference Include="../JsonNet/Newtonsoft.Json.FSharp.fsproj" />
   </ItemGroup>
 </Project>

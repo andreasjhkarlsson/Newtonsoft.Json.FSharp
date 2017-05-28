@@ -1,5 +1,7 @@
 namespace Newtonsoft.Json.FSharp
 
+open System.Reflection
+
 type UrnTypeName =
   { Namespace : string
     Name      : string
@@ -19,7 +21,7 @@ module TypeNaming =
   open System.Text
 
   open Microsoft.FSharp.Reflection
-  type BF=System.Reflection.BindingFlags
+  type BF = System.Reflection.BindingFlags
 
   /// Converts a string into a list of characters.
   let internal explode (s:string) =
@@ -96,7 +98,7 @@ module TypeNaming =
       { readableName = "module-owned disc. unions"
         applies      = fun typ -> typ.DeclaringType <> null && FSharpType.IsUnion(typ)
         apply        = fun typ v ->
-          let caseInfo, values = FSharpValue.GetUnionFields(v, typ, BF.Public ||| BF.NonPublic)
+          let caseInfo, values = FSharpValue.GetUnionFields(v, typ)
           (sprintf "%s|%s" typ.Name caseInfo.Name ), None
         deconstruct  = function
           // for getting case name
@@ -106,7 +108,7 @@ module TypeNaming =
       { readableName = "free-standing union types"
         applies      = fun typ -> typ.DeclaringType = null && FSharpType.IsUnion(typ)
         apply        = fun typ v ->
-          let caseInfo, values = FSharpValue.GetUnionFields(v, typ, BF.Public ||| BF.NonPublic)
+          let caseInfo, values = FSharpValue.GetUnionFields(v, typ)
           (sprintf "%s|%s" typ.Name caseInfo.Name ), None
         // not used
         deconstruct  = (fun _ -> "", None) }
@@ -130,7 +132,7 @@ module TypeNaming =
   //          System.Console.WriteLine(sprintf "looking at: %s, adding: %s, next type: None" n partName)
           acc.Append(partName).ToString()
 
-    apply concerns t (new StringBuilder())
+    apply concerns t (StringBuilder())
 
   /// Get the name for an object instance.
   let nameObj (v : 'a) = name v (v.GetType())
@@ -156,19 +158,19 @@ module TypeNaming =
     /// the types of the type parameters (if the type is generic).
     /// Throws argument exception if the type is an open generic type.
     member t.ToPartiallyQualifiedName () =
-      if t.IsGenericTypeDefinition then invalidArg "open generic types are not allwed" "t"
-      let sb = new StringBuilder()
+      if t.GetTypeInfo().IsGenericTypeDefinition then invalidArg "open generic types are not allwed" "t"
+      let sb = StringBuilder()
       let append = (fun s -> sb.Append(s) |> ignore) : string -> unit
 
       append t.FullName
 
-      if t.IsGenericType then
+      if t.GetTypeInfo().IsGenericType then
         append "["
-        let args = t.GetGenericArguments() |> Array.map (fun g -> sprintf "[%s]" <| g.ToPartiallyQualifiedName())
+        let args = t.GetTypeInfo().GetGenericArguments() |> Array.map (fun g -> sprintf "[%s]" <| g.ToPartiallyQualifiedName())
         append <| String.Join(", ", args)
         append "]"
     
       append ", "
-      append <| t.Assembly.GetName().Name
+      append <| t.GetTypeInfo().Assembly.GetName().Name
     
       sb.ToString()

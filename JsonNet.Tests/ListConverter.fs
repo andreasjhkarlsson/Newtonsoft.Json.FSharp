@@ -1,7 +1,6 @@
 ﻿module Newtonsoft.Json.FSharp.Tests.ListConverter
 
-open Fuchu
-open Swensen.Unquote
+open Expecto
 
 open System
 open Newtonsoft.Json
@@ -20,9 +19,9 @@ let list_tests =
 
     testCase "serialise to array representation" <| fun _ ->
       let str = serialise [ 1; 2; 3 ]
-      Assert.Equal("should be in array format", "[1,2,3]", str)
+      Expect.equal "[1,2,3]" str "should be in array format"
 
     testCase "deserialise" <| fun _ ->
       let res = deserialise "[1, 2, 3]" : int list
-      Assert.Equal("should equal list", [1; 2; 3], res)
+      Expect.equal [1; 2; 3] res "should equal list"
   ]

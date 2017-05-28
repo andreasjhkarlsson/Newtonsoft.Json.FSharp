@@ -1,6 +1,6 @@
 ﻿module Newtonsoft.Json.FSharp.Tests.FSharpRecord
 
-open Fuchu
+open Expecto
 open Newtonsoft.Json
 open Newtonsoft.Json.FSharp
 

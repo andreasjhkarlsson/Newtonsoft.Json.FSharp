@@ -1,6 +1,6 @@
 ﻿module Program
 
-open Fuchu
+open Expecto
 open Newtonsoft.Json.FSharp.Logging
 open System.Diagnostics
 open NodaTime
@@ -27,4 +27,4 @@ let main argv =
   //let tests = Newtonsoft.Json.FSharp.Tests.MapConverter.mapTests
   //            |> Test.filter (fun s -> s.Contains("playing with empty id"))
   //Tests.run tests
-  defaultMainThisAssembly argv
+  runTestsInAssembly defaultConfig argv

@@ -1,6 +1,5 @@
 ﻿module Newtonsoft.Json.FSharp.Tests.TupleArrayConverter
-open Fuchu
-open Swensen.Unquote
+open Expecto
 
 open System
 open Newtonsoft.Json
@@ -23,7 +22,6 @@ let tests =
       test Serialisation.converters ("", "")
 
     testCase "empty strings (explicit)" <| fun _ ->
-      let res = deserialise<TupleAlias2> Serialisation.converters
-                                  """["", ""]"""
-      Assert.Equal("should be eq to res", ("", ""), res)
+      let res = deserialise<TupleAlias2> Serialisation.converters """["", ""]"""
+      Expect.equal ("", "") res "should be eq to res"
   ]

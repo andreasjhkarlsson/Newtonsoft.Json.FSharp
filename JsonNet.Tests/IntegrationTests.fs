@@ -1,8 +1,7 @@
 module Newtonsoft.Json.FSharp.Tests.IntegrationTests
 
 open System
-open Swensen.Unquote
-open Fuchu
+open Expecto
 
 open Newtonsoft.Json
 open Newtonsoft.Json.FSharp
@@ -15,6 +14,6 @@ let expected_strings =
         new JsonSerializerSettings()
         |> Newtonsoft.Json.FSharp.Serialisation.extend
       let str = JsonConvert.SerializeObject([1; 2; 3], settings)
-      Assert.Equal("should have correct representation", "[1,2,3]", str)
+      Expect.equal "[1,2,3]" str "should have correct representation"
 
   ]

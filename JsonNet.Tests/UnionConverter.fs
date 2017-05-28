@@ -1,7 +1,6 @@
 module Newtonsoft.Json.FSharp.Tests.UnionConverter
 
-open Fuchu
-open Swensen.Unquote
+open Expecto
 
 open System
 open Newtonsoft.Json
@@ -21,10 +20,10 @@ let simple =
       let name, data =
         Serialisation.serialiseNoOpts sample
 
-      Assert.Equal("should have data", true, data.Length > 0)
+      Expect.equal true (data.Length > 0) "should have data"
 
       let o = Serialisation.deserialiseNoOpts (typeof<HelloWorld>, data) :?> HelloWorld
-      Assert.Equal("should eq structurally", sample, o)
+      Expect.equal sample o "should eq structurally"
     ]
 
 let sampleStr = "{\r\n  \"_name\": \"urn:Newtonsoft.Json.FSharp.Tests:UnionConverter_Event|Created\",\r\n  \"Created\": null\r\n}"
@@ -65,8 +64,7 @@ let complex =
       test <| Inner.N1
 
     testCase "deserialising simple union" <| fun _ ->
-      JsonConvert.DeserializeObject(sampleStr, typeof<Event>, UnionConverter())
-        <>? null
+      Expect.notEqual (JsonConvert.DeserializeObject(sampleStr, typeof<Event>, UnionConverter())) null "should not be null"
 
     testCase "serialising union containing record" <| fun _ ->
       test <| D3({ lhs = "LHS" ; rhs = "RHS" })
